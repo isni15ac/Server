@@ -3,8 +3,10 @@ package view.endpoints;
 import com.google.gson.Gson;
 import logic.UserController;
 import security.Digester;
-import shared.*;
-
+import shared.CourseDTO;
+import shared.LectureDTO;
+import shared.ReviewDTO;
+import shared.UserDTO;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -19,8 +21,9 @@ public class UserEndpoint {
      * @param code Fagkoden på det kursus man ønsker at hente.
      * @return En JSON String
      */
+
     @GET
-    @Consumes("applications/json")
+    //@Consumes("applications/json")
     @Path("/lecture/{code}")
     public Response getLectures(@PathParam("code") String code) {
         Gson gson = new Gson();
@@ -40,6 +43,7 @@ public class UserEndpoint {
      * @param userId Id'et på den bruger man ønsker at hente kurser for.
      * @return De givne kurser i form af en JSON String.
      */
+
     @GET
     @Path("/course/{userId}")
     public Response getCourses(@PathParam("userId") int userId) {
@@ -56,8 +60,8 @@ public class UserEndpoint {
     }
 
     @GET
-    @Consumes("applications/json")
-    @Path("/review/{lectureId}")
+    //@Consumes("applications/json")
+    @Path("/review/lecture/{lectureId}")
     public Response getReviews(@PathParam("lectureId") int lectureId) {
         Gson gson = new Gson();
         UserController userCtrl = new UserController();
@@ -70,9 +74,25 @@ public class UserEndpoint {
         }
     }
 
+    @GET
+    //@Consumes("applications/json")
+    @Path("/review/user/{userId}")
+    public Response getUserReviews(@PathParam("userId") int userId) {
+        Gson gson = new Gson();
+        UserController userCtrl = new UserController();
+        ArrayList<ReviewDTO> reviews = userCtrl.getUserReviews(userId);
+
+        if (!reviews.isEmpty()) {
+            return successResponse(200, reviews);
+        } else {
+            return errorResponse(404, "Failed. Couldn't get reviews.");
+        }
+    }
+
+
     @OPTIONS
     @Path("/login")
-    public Response optionsLogin(){
+    public Response optionsLogin() {
         return Response
                 .status(200)
                 .header("Access-Control-Allow-Origin", "*")
@@ -80,23 +100,52 @@ public class UserEndpoint {
                 .build();
     }
 
-    @GET
-    @Path("/study/{shortname}")
-    public Response getStudy(@PathParam("shortname") String shortname) {
+    @OPTIONS
+    @Path("/review/lecture/{lectureId}")
+    public Response getReview() {
+        return Response
+                .status(200)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Headers", "Content-Type")
+                .build();
 
-        Gson gson = new Gson();
-        UserController userCtrl = new UserController();
-        ArrayList<StudyDTO> studies = userCtrl.getStudies(shortname);
+    }
 
-        if (!studies.isEmpty()) {
-            return successResponse(200, studies);
-        } else {
-            return errorResponse(404, "Failed. Couldn't get courses.");
-        }
+    @OPTIONS
+    @Path("/review/user/{userId}")
+    public Response getUserReview() {
+        return Response
+                .status(200)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Headers", "Content-Type")
+                .build();
+
+    }
+
+    @OPTIONS
+    @Path("/course/{userId}")
+    public Response getCourse() {
+        return Response
+                .status(200)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Headers", "Content-Type")
+                .build();
+
+    }
+
+    @OPTIONS
+    @Path("/lecture/{userId}")
+    public Response getLecture() {
+        return Response
+                .status(200)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Headers", "Content-Type")
+                .build();
+
     }
 
     @POST
-    @Consumes("application/json")
+    //@Consumes("application/json")
     @Path("/login")
     public Response login(String data) {
 
@@ -105,8 +154,7 @@ public class UserEndpoint {
         UserController userCtrl = new UserController();
 
         if (user != null) {
-           UserDTO foo = userCtrl.login(user.getCbsMail(), user.getPassword());
-            return successResponse(200,foo);
+            return successResponse(200, userCtrl.login(user.getCbsMail(), user.getPassword()));
         } else {
             return errorResponse(401, "Couldn't login. Try again!");
         }
@@ -114,17 +162,20 @@ public class UserEndpoint {
 
     protected Response errorResponse(int status, String message) {
 
-        //return Response.status(status).entity(new Gson().toJson(Digester.encrypt("{\"message\": \"" + message + "\"}"))).build();
-        return Response.status(status).entity(new Gson().toJson("{\"message\": \"" + message + "\"}")).build();
+        return Response.status(status).entity(new Gson().toJson(Digester.encrypt("{\"message\": \"" + message + "\"}"))).build();
+        //return Response.status(status).entity(new Gson().toJson("{\"message\": \"" + message + "\"}")).build());
     }
 
     protected Response successResponse(int status, Object data) {
         Gson gson = new Gson();
 
-
+        //Pt. udkommenteret for testing.
         //return Response.status(status).entity(gson.toJson(Digester.encrypt(gson.toJson(data)))).build();
+
+        //Adding response headers to enable CORS in the Chrome browser
         return Response.status(status).header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Headers", "Content-Type").entity(gson.toJson(data)).build();
     }
+
 
 }
 
