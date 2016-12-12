@@ -1,5 +1,8 @@
 package shared;
 
+/**
+ * Opretter metoden ReviewDTO og tildeler den private værdier
+ */
 public class ReviewDTO {
 
     private int id;
@@ -11,8 +14,10 @@ public class ReviewDTO {
 
     public ReviewDTO() {
     }
-
-    public ReviewDTO(int userId, int lectureId, int rating, String comment, boolean isDeleted) {
+/**
+ * Getters og setters til ReviewDTO
+ */
+       public ReviewDTO(int userId, int lectureId, int rating, String comment, boolean isDeleted) {
         this.userId = userId;
         this.lectureId = lectureId;
         this.rating = rating;

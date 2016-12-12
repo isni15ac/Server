@@ -87,7 +87,7 @@ public class UserController {
         return reviews;
     }
 
-   public ArrayList<ReviewDTO> getUserReviews(int userId) {
+    public ArrayList<ReviewDTO> getUserReviews(int userId) {
 
         ArrayList<ReviewDTO> reviews = new ArrayList<ReviewDTO>();
 
@@ -117,7 +117,6 @@ public class UserController {
         return reviews;
     }
 
-
     public ArrayList<LectureDTO> getLectures(String code) {
 
         ArrayList<LectureDTO> lectures = new ArrayList<LectureDTO>();
@@ -134,7 +133,7 @@ public class UserController {
 
                 lecture.setStartDate(rs.getTimestamp("start"));
                 lecture.setEndDate(rs.getTimestamp("end"));
-                //lecture.setId(rs.getInt("id"));
+                lecture.setId(rs.getInt("id"));
                 lecture.setType(rs.getString("type"));
                 lecture.setDescription(rs.getString("description"));
 
@@ -178,7 +177,6 @@ public class UserController {
         return studies;
     }
 
-
     //Metode der softdeleter et review fra databasen - skal ind i AdminControlleren, da dette er moden for at slette et review uafhængigt af brugertype.
     public boolean softDeleteReview(int userId, int reviewId) {
         boolean isSoftDeleted = true;
@@ -189,11 +187,7 @@ public class UserController {
             isDeleted.put("is_deleted", "1");
 
             Map<String, String> whereParams = new HashMap();
-
-            if(userId != 0) {
-                whereParams.put("user_id", String.valueOf(userId));
-            }
-
+            whereParams.put("user_id", String.valueOf(userId));
             whereParams.put("id", String.valueOf(reviewId));
 
             DBWrapper.updateRecords("review", isDeleted, whereParams);
@@ -201,7 +195,6 @@ public class UserController {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            Logging.log(e,2,"Softdelete kunne ikke slette review, SoftDeleteReview.");
             isSoftDeleted = false;
         }
         return isSoftDeleted;

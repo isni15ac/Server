@@ -36,9 +36,20 @@ public class StudentEndpoint extends UserEndpoint {
         }
     }
 
+    @OPTIONS
+    @Path("/deleteReview")
+    public Response deleteReview() {
+        return Response
+                .status(200)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Headers", "Content-Type")
+                .build();
+
+    }
+
     @DELETE
     @Consumes("application/json")
-    @Path("/review/")
+    @Path("/deleteReview")
     public Response deleteReview(String data) {
         Gson gson = new Gson();
 
@@ -55,4 +66,5 @@ public class StudentEndpoint extends UserEndpoint {
             return errorResponse(404, "Failed. Couldn't delete the chosen review.");
         }
     }
+
 }

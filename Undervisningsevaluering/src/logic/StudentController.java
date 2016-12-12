@@ -25,6 +25,7 @@ public class StudentController extends UserController {
 */
 
     public void loadStudent(StudentDTO currentStudent) {
+
         this.currentStudent = currentStudent;
     }
 

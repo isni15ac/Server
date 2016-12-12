@@ -102,7 +102,7 @@ public class UserEndpoint {
 
     @OPTIONS
     @Path("/review/lecture/{lectureId}")
-    public Response getReview() {
+    public Response getReviews() {
         return Response
                 .status(200)
                 .header("Access-Control-Allow-Origin", "*")
@@ -111,7 +111,7 @@ public class UserEndpoint {
 
     }
 
-    @OPTIONS
+   @OPTIONS
     @Path("/review/user/{userId}")
     public Response getUserReview() {
         return Response

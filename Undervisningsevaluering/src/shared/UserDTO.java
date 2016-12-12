@@ -1,22 +1,27 @@
 package shared;
 
 import java.io.Serializable;
- 
+
+/**
+ * Implementere serializable med private værdier
+ */
 public class UserDTO implements Serializable {
 	
 	private int id;
     private String cbsMail, password, type;
 
 	private static final long serialVersionUID = 1L;
-    
+
+    /**
+     * getter og setters til UserDTO
+     */
     public UserDTO(int id, String cbsMail, String password, String type) {
         this.id = id;
         this.cbsMail = cbsMail;
         this.password = password;
         this.type = type;
     }
-    
-    //Must be defined
+
     public UserDTO() {
     }
 

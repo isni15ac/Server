@@ -21,6 +21,7 @@ public class LectureDTO {
     }
 
 
+
     public LectureDTO(int courseId, String type, String description, Date startDate, Date endDate, String location, int id) {
         this.courseId = courseId;
         this.type = type;
@@ -31,10 +32,23 @@ public class LectureDTO {
         this.id = id;
     }
 
+
+
     public int getId() {
         return id;
     }
 
+    public void setId(int id){
+        this.id=id;
+    }
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
 
 
     public int getLectureId() {
@@ -43,10 +57,6 @@ public class LectureDTO {
 
     public void setLectureId(int id) {
         this.id = id;
-    }
-
-    public int getCourseId() {
-        return courseId;
     }
 
     public void setCourseId() {

@@ -1,4 +1,3 @@
-//TODO: Mangler dokumentation.
 import com.google.gson.Gson;
 import com.sun.jersey.api.container.httpserver.HttpServerFactory;
 import com.sun.net.httpserver.HttpServer;
@@ -16,14 +15,18 @@ import view.TUIMainMenu;
 import javax.ws.rs.*;
 import java.io.PrintStream;
 
-//TODO: Missing documentation and use of config variables.
+/**
+ * Run metode
+ */
 public class Run {
 
     public static void main(String[] args) throws IOException {
 
         HttpServer server = null;
 
-        //Loader configfilen
+        /**
+         * Loader configfilen
+         */
         ConfigLoader.parseConfig();
 
         try {
@@ -38,7 +41,9 @@ public class Run {
 
         server.start();
 
-        //Setup logLevel and prepare to log
+        /**
+         * Setup logLevel and prepare to log
+         */
         Logging.initiateLog(ConfigLoader.DEBUG);
 
 
@@ -49,7 +54,9 @@ public class Run {
         }
 
 
-        //Loader courses og lectures ind til databasen
+        /**
+         * Loader courses og lectures ind til databasen
+         */
         System.out.println("Server running");
         System.out.println("Visit: http://" + ConfigLoader.SERVER_ADDRESS + ":" + ConfigLoader.SERVER_PORT + "/");
 
